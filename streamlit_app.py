@@ -11,11 +11,28 @@ import matplotlib.font_manager as fm
 from sklearn.datasets import load_iris, load_wine, fetch_california_housing
 import streamlit as st
 
-# ── 中文字型設定：優先讀取 repo 內的字型檔 ───────────────────
-_font_path = os.path.join(os.path.dirname(__file__), "fonts", "NotoSansTC-Regular.ttf")
-if os.path.exists(_font_path):
-    fm.fontManager.addfont(_font_path)
-    plt.rcParams["font.family"] = fm.FontProperties(fname=_font_path).get_name()
+# ── 中文字型設定 ─────────────────────────────────────────────
+def _setup_cjk_font():
+    # 1. 嘗試本地字型檔
+    local = os.path.join(os.path.dirname(__file__), "NotoSansTC-Regular.ttf")
+    if os.path.exists(local):
+        try:
+            fm.fontManager.addfont(local)
+            plt.rcParams["font.family"] = fm.FontProperties(fname=local).get_name()
+            return
+        except Exception:
+            pass
+    # 2. 搜尋系統已安裝的 CJK 字型（來自 packages.txt）
+    keywords = ["noto", "cjk", "chinese", "tc", "tw", "gothic", "ming"]
+    for path in fm.findSystemFonts():
+        if any(k in path.lower() for k in keywords):
+            try:
+                plt.rcParams["font.family"] = fm.FontProperties(fname=path).get_name()
+                return
+            except Exception:
+                continue
+
+_setup_cjk_font()
 plt.rcParams["axes.unicode_minus"] = False
 
 # ── 頁面設定 ──────────────────────────────────────────────────
