@@ -9,6 +9,10 @@ import matplotlib.gridspec as gridspec
 from sklearn.datasets import load_iris, load_wine, fetch_california_housing
 import streamlit as st
 
+# ── 中文字型設定（Linux / Streamlit Cloud）───────────────────
+plt.rcParams["font.family"] = "Noto Sans CJK TC"
+plt.rcParams["axes.unicode_minus"] = False
+
 # ── 頁面設定 ──────────────────────────────────────────────────
 st.set_page_config(page_title="資料視覺化工具", page_icon="📊", layout="wide")
 st.title("📊 資料視覺化工具")
