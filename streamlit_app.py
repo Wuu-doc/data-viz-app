@@ -3,14 +3,19 @@
 使用 Streamlit + Matplotlib + scikit-learn
 """
 
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+import matplotlib.font_manager as fm
 from sklearn.datasets import load_iris, load_wine, fetch_california_housing
 import streamlit as st
 
-# ── 中文字型設定（Linux / Streamlit Cloud）───────────────────
-plt.rcParams["font.family"] = "Noto Sans CJK TC"
+# ── 中文字型設定：優先讀取 repo 內的字型檔 ───────────────────
+_font_path = os.path.join(os.path.dirname(__file__), "fonts", "NotoSansTC-Regular.ttf")
+if os.path.exists(_font_path):
+    fm.fontManager.addfont(_font_path)
+    plt.rcParams["font.family"] = fm.FontProperties(fname=_font_path).get_name()
 plt.rcParams["axes.unicode_minus"] = False
 
 # ── 頁面設定 ──────────────────────────────────────────────────
